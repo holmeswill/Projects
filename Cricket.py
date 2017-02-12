@@ -25,6 +25,10 @@ foH=95
 sxL=foH
 sxH=100
 
+Deffensive = [0,50,70,85,90,97,100]
+Current=Deffensive
+
+BatterChoices = [Deffensive, 'Moderate', 'Agresive']
 
 #This first bit sets up the window
 
@@ -35,15 +39,21 @@ class simpleapp_tk(tkinter.Tk):
         self.initialize()
 
     def initialize(self):
+        
+        global BatterChoices
+        
+        
         self.grid()
  
-
-#This is the textbox that is currently not needed       
+             
         self.entryVariable = tkinter.StringVar()
-        self.entry = tkinter.Entry(self,textvariable=self.entryVariable)
+        self.entry = tkinter.OptionMenu(self,'this',BatterChoices)
         self.entry.grid(column=0,row=0,sticky='EW')
         self.entry.bind("<Return>", self.OnPressEnter)
         self.entryVariable.set("Enter text here")
+
+        
+        
 
 #This sets up the button and points to OnButtonClick, sets up the label etc, this ahpends four times
         button = tkinter.Button(self,text="Bowl",
@@ -84,18 +94,19 @@ class simpleapp_tk(tkinter.Tk):
         global runs, overs, wickets
               
         shot = random.randint(0,100) #shot gives a probablity to work with
-        if shot in range(nuL,nuH):
+        if shot in range(Current[0],Current[1]):
             hit = 0
-        if shot in range(siL,siH):
+        if shot in range(Current[1],Current[2]):
             hit=1
-        if shot in range(duL,duH):
+        if shot in range(Current[2],Current[3]):
             hit=2
-        if shot in range(trL,trH):
+        if shot in range(Current[3],Current[4]):
             hit=3
-        if shot in range(foL,foH):
+        if shot in range(Current[4],Current[5]):
             hit=4
-        if shot in range(sxL,sxH):
+        if shot in range(Current[5],Current[6]):
             hit =6
+        
         out = random.randint(0,100)
         if out >= 90:
             wickets = wickets -1
