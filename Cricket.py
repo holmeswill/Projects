@@ -116,7 +116,7 @@ class simpleapp_tk(tkinter.Tk):
 
 if __name__ == "__main__":
     app = simpleapp_tk(None)
-    app.title('Cricket 2017')
+    app.title('Clickit')
     app.mainloop()
         
 
