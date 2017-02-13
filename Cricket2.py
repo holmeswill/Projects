@@ -10,13 +10,51 @@ import tkinter as tk
 import random
 import numpy as np
 
+batter1={'name':'one','Ave':50,'SR':50,'Score':0}
+batter2={'name':'two','Ave':45,'SR':50,'Score':0}
+batter3={'name':'three','Ave':40,'SR':50,'Score':0}
+batter4={'name':'four','Ave':35,'SR':50,'Score':0}
+batter5={'name':'five','Ave':30,'SR':50,'Score':0}
+batter6={'name':'six','Ave':25,'SR':50,'Score':0}
+batter7={'name':'seven','Ave':20,'SR':50,'Score':0}
+batter8={'name':'eight','Ave':15,'SR':50,'Score':0}
+batter9={'name':'nine','Ave':10,'SR':50,'Score':0}
+batter10={'name':'ten','Ave':5,'SR':50,'Score':0}
+batter11={'name':'eleven','Ave':0,'SR':50,'Score':0}
+
+
+team1=[batter1,batter2,batter3,batter4,batter5,batter6,batter7,batter8,batter9,batter10,batter11]
+
 Deffensive = [0,50,70,85,90,97,100]
 Modderate = [0,20,40,60,70,90,100]
 Agressive = [0,10,20,30,40,80,100]
 Current=Deffensive
+Cteam=team1
+Cbatter=Cteam[0]
+Abatter=Cteam[1]
 overs=0
 runs=0
 wickets=10
+hit=0
+out=0
+
+mod1=50
+
+
+
+
+def teambox():
+    teambox=tk.Tk()
+    teambox.grid()
+    teambox.title('Team Options')
+    teambut1=tk.Button(teambox,text='Team 1',command=Teamcho1)
+    teambut1.grid(column=0,row=0)
+    teambox.mainloop()
+    
+def Teamcho1():
+    global Cteam
+    Cteam=team1
+    root.team1Variable.set("Batting: "+str(Cbatter['name']))
 
 def Batopt():
     Batbox=tk.Tk()
@@ -54,62 +92,85 @@ def BatAgg():
 
     
 def Bowl():
-        global runs, overs, wickets
+        global runs, overs, wickets, Cbatter, ACbatter, hit, out,mod1
               
-        shot = random.randint(0,100) #shot gives a probablity to work with
+        shot = random.randint(Cbatter['SR']/2,100)
+        out = random.randint(0,np.floor(100-Cbatter['Ave']/5))
         if shot in range(Current[0],Current[1]):
             hit = 0
             root.StatuslabelVariable.set("Commentator: Safely Defended")
-            out = random.randint(0,100)
+            
             if out >=95:
                 wickets=wickets-1
                 root.StatuslabelVariable.set("Commentator: That's betten the Bat!!(0)")
+                Cbatter=Cteam[10-wickets]
+                root.team1Variable.set("Batting: "+str(Cbatter['name']))
+                hit=0
             
         if shot in range(Current[1],Current[2]):
             hit=1
             root.StatuslabelVariable.set("Commentator: A quick single")
-            out = random.randint(0,100)
+            
             if out >=93:
                 wickets=wickets-1
                 root.StatuslabelVariable.set("Commentator: That's betten the Bat!!(1)")
+                Cbatter=Cteam[10-wickets]
+                root.team1Variable.set("Batting: "+str(Cbatter['name']))
+                hit=0
+
                 
         if shot in range(Current[2],Current[3]):
             hit=2
             root.StatuslabelVariable.set("Commentator: Thats two")
-            out = random.randint(0,100)
+    
             if out >=90:
                 wickets=wickets-1
                 root.StatuslabelVariable.set("Commentator: That's betten the Bat!!(2)")
+                Cbatter=Cteam[10-wickets]
+                root.team1Variable.set("Batting: "+str(Cbatter['name']))
+                hit=0
+
         if shot in range(Current[3],Current[4]):
             hit=3
             root.StatuslabelVariable.set("Commentator: They've taken three")
-            out = random.randint(0,100)
+            
             if out >=87:
                 wickets=wickets-1
                 root.StatuslabelVariable.set("Commentator: That's betten the Bat!!(3)")
+                Cbatter=Cteam[10-wickets]
+                root.team1Variable.set("Batting: "+str(Cbatter['name']))
+                hit=0
+
         if shot in range(Current[4],Current[5]):
             hit=4
             root.StatuslabelVariable.set("Commentator: That's four runs")
-            out = random.randint(0,100)
+            
             if out >=80:
                 wickets=wickets-1
                 root.StatuslabelVariable.set("Commentator: That's betten the Bat!!(4)")
-        if shot in range(Current[5],Current[6]):
+                Cbatter=Cteam[10-wickets]
+                root.team1Variable.set("Batting: "+str(Cbatter['name']))
+                hit=0
+
+        if shot >= Current[5]:
             hit =6
             root.StatuslabelVariable.set("Commentator: A cracking six!!")
-            out = random.randint(0,100)
+            
             if out >=75:
                 wickets=wickets-1
                 root.StatuslabelVariable.set("Commentator: That's betten the Bat!!(6)")
-        #out = random.randint(0,100)
-        #if out >= 90:
-            #wickets = wickets -1
+                Cbatter=Cteam[10-wickets]
+                root.team1Variable.set("Batting: "+str(Cbatter['name']))
+                hit=0
+        
             
         runs=runs+hit
         overs=overs+0.1
+        Cbatter['Score']=Cbatter['Score']+hit
         print('shot '+str(shot))
         print('hit ' +str(hit))
         print('out ' +str(out))
+        print('CBatScore_'+str(Cbatter['Score']))
         
         root.RunslabelVariable.set("Total Runs: "+str(runs))
         root.OverslabelVariable.set("Total Overs: "+str(np.round(overs,1)))
@@ -146,18 +207,30 @@ BatDemlabel = tk.Label(root,textvariable=root.BatDemlabelVariable, anchor="w",fg
 BatDemlabel.grid(column=2,row=5,columnspan=2,sticky='EW')
 root.BatDemlabelVariable.set("Batter Demenor: Deffensive")
 
+root.team1Variable = tk.StringVar()
+team1label = tk.Label(root,textvariable=root.team1Variable, anchor="w",fg="black",bg="grey")
+team1label.grid(column=2,row=6,columnspan=2,sticky='EW')
+root.team1Variable.set("Batting: ")
+
 but1 = tk.Button(root,text='Bowl',command=Bowl)
 but1.grid(column=0,row=0)
 
 
 
-Optmenu=Menu(root)
+Optmenu=tk.Menu(root)
 root.config(menu=Optmenu)
 
-submenu=Menu(Optmenu)
+submenu=tk.Menu(Optmenu)
 Optmenu.add_cascade(label='Options', menu=submenu)
 submenu.add_command(label='Batter',command=Batopt)
 submenu.add_command(label='Bowler',command=Bowlopt)
+submenu.add_command(label='Choose Teams',command=teambox)
+
+#Teammenu=tk.Menu(root)
+#root.config(menu=Teammenu)
+#subTeammenu=tk.Menu(Teammenu)
+#Teammenu.add_cascade(label='Choose Teams', menu=subTeammenu)
+
 
 
 #menu=Menu(root)
