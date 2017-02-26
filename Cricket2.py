@@ -41,7 +41,16 @@ out=0
 mod1=50
 
 
-
+def Scorecard():
+    scorebox=tk.Tk()
+    scorebox.grid()
+    
+    
+    
+    scorebox.title('Score Card')
+    
+    scorebox.geometry('{}x{}'.format(600, 600))
+    Scorecard.mainloop()
 
 def teambox():
     teambox=tk.Tk()
@@ -160,6 +169,7 @@ def Bowl():
                 wickets=wickets-1
                 root.StatuslabelVariable.set("Commentator: That's betten the Bat!!(6)")
                 Cbatter=Cteam[10-wickets]
+                
                 root.team1Variable.set("Batting: "+str(Cbatter['name']))
                 hit=0
         
@@ -167,6 +177,7 @@ def Bowl():
         runs=runs+hit
         overs=overs+0.1
         Cbatter['Score']=Cbatter['Score']+hit
+        Cteam[11-wickets]['Score']=Cbatter['Score']
         print('shot '+str(shot))
         print('hit ' +str(hit))
         print('out ' +str(out))
@@ -175,7 +186,6 @@ def Bowl():
         root.RunslabelVariable.set("Total Runs: "+str(runs))
         root.OverslabelVariable.set("Total Overs: "+str(np.round(overs,1)))
         root.WicketslabelVariable.set("Wickets Remaining: "+str(wickets))
-        
         
         
 root = tk.Tk()
@@ -215,7 +225,8 @@ root.team1Variable.set("Batting: ")
 but1 = tk.Button(root,text='Bowl',command=Bowl)
 but1.grid(column=0,row=0)
 
-
+but2 = tk.Button(root,text='Score Card',command=Scorecard)
+but2.grid(column=2,row=0)
 
 Optmenu=tk.Menu(root)
 root.config(menu=Optmenu)
@@ -225,6 +236,21 @@ Optmenu.add_cascade(label='Options', menu=submenu)
 submenu.add_command(label='Batter',command=Batopt)
 submenu.add_command(label='Bowler',command=Bowlopt)
 submenu.add_command(label='Choose Teams',command=teambox)
+
+batterlabel=tk.Label(root, text='Batter')
+batterlabel.grid(row=0, column=4)
+scorelabel=tk.Label(root, text='Runs')
+scorelabel.grid(row=0, column=5)
+batter1name=tk.Label(root, text=Cteam[0]['name'])
+batter1name.grid(row=1, column=4)
+batter2name=tk.Label(root, text=Cteam[1]['name'])
+batter2name.grid(row=2, column=4)
+
+batter1runs=tk.Label(root, text=Cteam[0]["Score"])
+batter1runs.grid(row=1,column=5)
+
+
+
 
 #Teammenu=tk.Menu(root)
 #root.config(menu=Teammenu)
